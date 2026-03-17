@@ -3,3 +3,5 @@ Proyecto en desarrollo - Este repositorio no corresponde a lo que se esta progra
 
 <img width="1426" height="928" alt="imagen" src="https://github.com/user-attachments/assets/db7adbff-2e4e-4eba-bd7d-28ddf1100d5d" />
 <img width="1431" height="904" alt="imagen" src="https://github.com/user-attachments/assets/89e3b77e-72ee-4dd0-a442-0bc56e813ecf" />
+<img width="1191" height="932" alt="imagen" src="https://github.com/user-attachments/assets/6689d894-b3a3-4ddf-a410-927a59a1a82d" />
+
