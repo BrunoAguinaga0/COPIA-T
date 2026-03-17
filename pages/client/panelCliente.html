@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Personal - COPIA-T</title>
+    <link rel="stylesheet" href="../../assets/css/panelCliente.css">
+    <link rel="icon" href="../../assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="../../assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="header-logo">
+            <h1>👤Panel Personal</h1>
+            <button class="logout-btn" onclick="cerrarSesion()">
+                <span>🚪</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </header>    <main>
+        <!-- Dashboard Principal -->        <section class="dashboard-section">
+            <div class="dashboard-grid">
+                <!-- Crear Nuevo Pedido -->
+                <div class="dashboard-card">
+                    <div class="card-icon">🖨️</div>
+                    <h3>Crear Nuevo Pedido</h3>
+                    <p>Sube tus archivos y configura tu pedido de impresión</p>
+                    <a href="../orders/crearPedido.html" class="card-button">Crear Pedido</a>
+                </div>
+            </div>        </section>
+    </main><footer>
+        <p>&copy; 2025 desarrollado por PATAGONYA-BYTES</p>
+        <p>            <a href="../../terms.html">Términos y condiciones</a> • 
+            <a href="../../index.html">Volver al inicio</a>
+        </p>
+    </footer>
+
+    <!-- Modal para Editar Perfil -->
+    <div id="modal-perfil" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>✏️ Editar Perfil</h3>
+                <button class="modal-close" onclick="cerrarModal('modal-perfil')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-perfil" class="form-modal">
+                    <div class="form-group">
+                        <label for="edit-nombre">Nombre completo:</label>
+                        <input type="text" id="edit-nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email:</label>
+                        <input type="email" id="edit-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-telefono">Teléfono:</label>
+                        <input type="tel" id="edit-telefono" name="telefono">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModal('modal-perfil')">Cancelar</button>
+                <button class="btn btn-primary" onclick="guardarPerfil()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Cambiar Contraseña -->
+    <div id="modal-password" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>🔐 Cambiar Contraseña</h3>
+                <button class="modal-close" onclick="cerrarModal('modal-password')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-password" class="form-modal">
+                    <div class="form-group">
+                        <label for="password-actual">Contraseña actual:</label>
+                        <input type="password" id="password-actual" name="passwordActual" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password-nueva">Nueva contraseña:</label>
+                        <input type="password" id="password-nueva" name="passwordNueva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password-confirmar">Confirmar nueva contraseña:</label>
+                        <input type="password" id="password-confirmar" name="passwordConfirmar" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModal('modal-password')">Cancelar</button>
+                <button class="btn btn-primary" onclick="cambiarPassword()">Cambiar Contraseña</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Historial de Pedidos -->
+    <div id="modal-historial" class="modal-overlay modal-large">
+        <div class="modal-dialog modal-dialog-large">
+            <div class="modal-header">
+                <h3>📋 Historial de Pedidos</h3>
+                <button class="modal-close" onclick="cerrarModal('modal-historial')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="historial-contenido">
+                    <!-- Se carga dinámicamente -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="cerrarModal('modal-historial')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación para Cerrar Sesión -->
+    <div id="modal-logout" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Cerrar Sesión</h3>
+                <button class="modal-close" onclick="cerrarModal('modal-logout')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon confirm">🚪</div>
+                <p>¿Estás seguro de que quieres cerrar sesión?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModal('modal-logout')">Cancelar</button>
+                <button class="btn btn-primary" onclick="confirmarCerrarSesion()">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>    <!-- Modal General para Notificaciones -->
+    <div id="modal-notificacion" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="notif-title">Notificación</h3>
+                <button class="modal-close" onclick="cerrarModal('modal-notificacion')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="notif-icon" class="modal-icon"></div>
+                <p id="notif-message">Mensaje</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="cerrarModal('modal-notificacion')">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/panelCliente.js"></script>
+</body>
+</html>

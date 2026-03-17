@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Pendiente - COPIA-T</title>
+    <link rel="stylesheet" href="pagarPedido.css">
+    <link rel="icon" href="../../assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+    <style>
+        .result-page {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .pending-icon {
+            font-size: 4rem;
+            color: #f59e0b;
+            margin-bottom: 20px;
+        }
+        
+        .result-title {
+            color: #f59e0b;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .result-message {
+            color: #6b7280;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .payment-details {
+            background: #fffbeb;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .payment-details h3 {
+            color: #d97706;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #fed7aa;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .btn-home {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+        }
+        
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-status {
+            background: #f59e0b;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-status:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+        }
+        
+        .next-steps {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .next-steps h4 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        
+        .next-steps ul {
+            color: #6b7280;
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .next-steps li {
+            margin: 8px 0;
+        }
+        
+        .payment-methods {
+            background: #fef3c7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .payment-methods h4 {
+            color: #92400e;
+            margin-bottom: 15px;
+        }
+        
+        .method-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #fbbf24;
+        }
+        
+        .method-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .method-text {
+            flex: 1;
+        }
+        
+        .method-text strong {
+            color: #92400e;
+        }
+        
+        .method-text small {
+            color: #6b7280;
+            display: block;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #fbbf24;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-page">
+        <img src="../../assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="logo" style="width: 80px; height: 80px; margin-bottom: 20px;">
+        
+        <div class="pending-icon">⏳</div>
+        
+        <h1 class="result-title">Pago Pendiente</h1>
+        
+        <p class="result-message">
+            Tu pago está siendo procesado. Dependiendo del método de pago seleccionado, la confirmación puede tomar algunos minutos u horas.
+        </p>
+        
+        <div class="payment-details">
+            <h3>📋 Detalles del Pedido</h3>
+            <div class="detail-item">
+                <span>Número de Referencia:</span>
+                <span id="payment-id">-</span>
+            </div>
+            <div class="detail-item">
+                <span>Estado del Pago:</span>
+                <span class="status-indicator">Pendiente</span>
+            </div>
+            <div class="detail-item">
+                <span>Método de Pago:</span>
+                <span>MercadoPago</span>
+            </div>
+            <div class="detail-item">
+                <span>Monto:</span>
+                <span id="payment-amount">$0.00</span>
+            </div>
+        </div>
+        
+        <div class="payment-methods">
+            <h4>💳 Tiempo de Procesamiento Según Método:</h4>
+            
+            <div class="method-item">
+                <span class="method-icon">💳</span>
+                <div class="method-text">
+                    <strong>Tarjeta de Crédito/Débito:</strong>
+                    <small>Generalmente se procesa en pocos minutos</small>
+                </div>
+            </div>
+            
+            <div class="method-item">
+                <span class="method-icon">🏪</span>
+                <div class="method-text">
+                    <strong>Efectivo (Rapipago, Pago Fácil):</strong>
+                    <small>Hasta 2 días hábiles después del pago</small>
+                </div>
+            </div>
+            
+            <div class="method-item">
+                <span class="method-icon">🏦</span>
+                <div class="method-text">
+                    <strong>Transferencia Bancaria:</strong>
+                    <small>1 a 2 días hábiles según el banco</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="next-steps">
+            <h4>📝 Qué Hacer Ahora:</h4>
+            <ul>
+                <li><strong>Conserva el comprobante:</strong> Guarda el comprobante de pago para futuras consultas</li>
+                <li><strong>Revisa tu email:</strong> Te enviaremos actualizaciones sobre el estado del pago</li>
+                <li><strong>Sé paciente:</strong> Los pagos en efectivo pueden tomar hasta 2 días en confirmarse</li>
+                <li><strong>Contacto:</strong> Si tienes dudas, puedes contactarnos con el número de referencia</li>
+            </ul>
+        </div>
+        
+        <div style="margin: 30px 0;">
+            <a href="../../index.html" class="btn-home">🏠 Volver al Inicio</a>
+            <a href="#" class="btn-status" onclick="checkPaymentStatus()">🔍 Consultar Estado</a>
+        </div>
+        
+        <div style="background: #e0f2fe; border-radius: 8px; padding: 15px; margin: 20px 0; border-left: 4px solid #0284c7;">
+            <p style="margin: 0; color: #0c4a6e;">
+                <strong>💡 Importante:</strong> Una vez confirmado el pago, tu pedido iniciará automáticamente. 
+                Te notificaremos por email cuando esto suceda.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Obtener parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get('payment_id');
+        const status = urlParams.get('status');
+        const merchantOrderId = urlParams.get('merchant_order_id');
+        
+        // Mostrar información del pago si está disponible
+        if (paymentId) {
+            document.getElementById('payment-id').textContent = paymentId;
+        }
+        
+        function checkPaymentStatus() {
+            if (paymentId) {
+                // Aquí podrías implementar una función para consultar el estado del pago
+                alert('Función de consulta de estado en desarrollo. Por favor, revisa tu email para actualizaciones.');
+            } else {
+                alert('No se encontró información del pago para consultar.');
+            }
+        }
+        
+        // Auto-refresh cada 30 segundos para verificar si el pago fue confirmado
+        let refreshInterval;
+        
+        function startAutoRefresh() {
+            refreshInterval = setInterval(function() {
+                // Aquí podrías hacer una llamada AJAX para verificar el estado del pago
+                // Si el pago fue confirmado, redirigir a success.html
+                console.log('Verificando estado del pago...');
+            }, 30000); // 30 segundos
+        }
+        
+        // Iniciar auto-refresh si hay un payment_id
+        if (paymentId) {
+            startAutoRefresh();
+        }
+        
+        // Limpiar interval cuando se cierre la página
+        window.addEventListener('beforeunload', function() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);        }
+        });
+    </script>
+    
+    <footer style="text-align: center; margin-top: 40px; padding: 20px; font-size: 0.9em; color: #666;">
+        <p>&copy; 2025 desarrollado por PATAGONYA-BYTES</p>
+    </footer>
+</body>
+</html>

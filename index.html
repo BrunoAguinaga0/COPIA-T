@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COPIA-T - Tu Solución de Impresión Digital</title>
+    <meta name="description" content="COPIA-T - Servicio de impresión y copiado digital rápido, seguro y confiable. Sube tus archivos y recibe tu pedido en minutos.">    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="icon" href="assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- Partículas animadas de fondo -->
+    <div class="particles" id="particles"></div>
+    
+    <header>
+        <h1>COPIA-T</h1>
+    </header>
+    
+    <section>
+        <article>
+            <h2>Bienvenido a <span class="highlight">COPIA-T</span></h2>
+            <img src="assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="logo">
+            
+            <p>🖨️ Tu solución de <strong>impresión digital</strong> al instante</p>
+            <p>Sube tus archivos, configura tu pedido y recíbelo en minutos. <br>
+               <em>Rápido • Seguro • Confiable</em></p>
+
+            <div class="buttons">
+                <a href="pages/auth/login.html" class="button">
+                    <span class="button-icon">🚀</span>
+                    Comenzar Ahora
+                </a>
+                <a href="pages/auth/registro.html" class="button">
+                    <span class="button-icon">👤</span>
+                    Crear Cuenta
+                </a>
+            </div>
+            
+            <!-- Información adicional -->
+            <div class="info-extra">
+                <p class="info-text">
+                    <strong>🎯 ¿Nuevo aquí?</strong> Regístrate en segundos y comienza a imprimir de inmediato
+                </p>
+                <p class="info-text">
+                    <strong>💳 Pagos flexibles:</strong> Transferencia bancaria o MercadoPago
+                </p>
+            </div>
+        </article>
+    </section>
+      <footer>
+        <p>&copy; 2025 desarrollado por PATAGONYA-BYTES</p>
+        <p>
+            <a href="terms.html">Términos y condiciones</a> • 
+            <a href="#" onclick="mostrarContacto()">Contacto</a> • 
+            <a href="#" onclick="mostrarAyuda()">Ayuda</a>
+        </p>
+    </footer>
+
+    <!-- Modal Dialog para Cerrar Sesión -->
+    <div id="modal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modal-title">Cerrar Sesión</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-icon" class="modal-icon confirm">🚪</div>
+                <p id="modal-message">¿Estás seguro de que quieres cerrar sesión?</p>
+            </div>
+            <div class="modal-footer" id="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="confirmarCerrarSesion()">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== EFECTOS DE PARTÍCULAS =====
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particles.appendChild(particle);
+            }
+        }
+
+        // ===== FUNCIONES DE INTERACCIÓN =====
+        function mostrarContacto() {
+            alert('📧 Contacto: info@copia-t.com\n📞 Teléfono: +54 11 1234-5678\n📍 Dirección: Av. Corrientes 1234, CABA');
+        }
+
+        function mostrarAyuda() {
+            alert('❓ ¿Necesitas ayuda?\n\n1. Regístrate o inicia sesión\n2. Sube tus archivos PDF\n3. Configura tu pedido\n4. Realiza el pago\n5. ¡Recoge tu pedido!\n\n✨ ¡Es así de fácil!');
+        }
+
+        // ===== ANIMACIONES DINÁMICAS =====
+        function addDynamicEffects() {
+            const logo = document.querySelector('.logo');
+            const buttons = document.querySelectorAll('.button');
+            
+            // Efecto de hover mejorado para el logo
+            logo.addEventListener('mouseenter', () => {
+                logo.style.filter = 'drop-shadow(0 12px 20px rgba(59, 130, 246, 0.5)) hue-rotate(30deg)';
+            });
+            
+            logo.addEventListener('mouseleave', () => {
+                logo.style.filter = 'drop-shadow(0 8px 16px rgba(59, 130, 246, 0.3))';
+            });
+            
+            // Efectos de botones mejorados
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', (e) => {
+                    e.target.style.transform = 'translateY(-3px) scale(1.02)';
+                });
+                
+                button.addEventListener('mouseleave', (e) => {
+                    e.target.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        }
+
+        // ===== INICIALIZACIÓN =====
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            addDynamicEffects();
+            
+            // Mensaje de bienvenida
+            setTimeout(() => {
+                console.log('🎉 ¡Bienvenido a COPIA-T! La mejor experiencia de impresión digital te espera.');
+            }, 2000);
+        });        // ===== DETECTAR USUARIO LOGUEADO =====
+        window.addEventListener('load', () => {
+            const usuarioLogueado = localStorage.getItem('usuarioLogueado');
+            const adminLogueado = localStorage.getItem('adminLogueado');
+            const empleadoLogueado = localStorage.getItem('empleadoLogueado');
+            
+            if (adminLogueado) {
+                const admin = JSON.parse(adminLogueado);
+                const buttonsDiv = document.querySelector('.buttons');
+                buttonsDiv.innerHTML = `
+                    <div class="welcome-back">
+                        <p>👑 ¡Bienvenido <strong>Administrador</strong>!</p>                        <a href="pages/admin/panelAdmin.html" class="button">
+                            <span class="button-icon">🛠️</span>
+                            Panel de Administración
+                        </a>
+                        <a href="pages/orders/crearPedido.html" class="button">
+                            <span class="button-icon">🖨️</span>
+                            Crear Nuevo Pedido
+                        </a>
+                        <button onclick="cerrarSesion()" class="button secondary">
+                            <span class="button-icon">🚪</span>
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                `;
+            } else if (empleadoLogueado) {
+                const empleado = JSON.parse(empleadoLogueado);
+                const buttonsDiv = document.querySelector('.buttons');
+                buttonsDiv.innerHTML = `
+                    <div class="welcome-back">
+                        <p>👨‍💼 ¡Bienvenido <strong>Empleado</strong>!</p>                        <a href="pages/client/panelEmpleado.html" class="button">
+                            <span class="button-icon">📋</span>
+                            Panel de Empleado
+                        </a>
+                        <a href="pages/orders/crearPedido.html" class="button">
+                            <span class="button-icon">🖨️</span>
+                            Crear Nuevo Pedido
+                        </a>
+                        <button onclick="cerrarSesion()" class="button secondary">
+                            <span class="button-icon">🚪</span>
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                `;
+            } else if (usuarioLogueado) {
+                const usuario = JSON.parse(usuarioLogueado);
+                const buttonsDiv = document.querySelector('.buttons');
+                buttonsDiv.innerHTML = `
+                    <div class="welcome-back">
+                        <p>👋 ¡Bienvenido de vuelta, <strong>${usuario.nombre || usuario.email}</strong>!</p>                        <a href="pages/orders/crearPedido.html" class="button">
+                            <span class="button-icon">🖨️</span>
+                            Crear Nuevo Pedido
+                        </a>
+                        <button onclick="cerrarSesion()" class="button secondary">
+                            <span class="button-icon">🚪</span>
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                `;
+            }
+        });        function cerrarSesion() {
+            showModal();
+        }
+
+        // ===== FUNCIONES DEL MODAL =====
+        function showModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }        function confirmarCerrarSesion() {
+            localStorage.removeItem('usuarioLogueado');
+            localStorage.removeItem('adminLogueado');
+            localStorage.removeItem('empleadoLogueado');
+            localStorage.removeItem('pedidoActual');
+            localStorage.removeItem('pagoCompleto');
+            closeModal();
+            setTimeout(() => {
+                location.reload();
+            }, 300);
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('modal');
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

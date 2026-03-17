@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - COPIA-T</title>    <link rel="stylesheet" href="../../assets/css/registro.css">
+    <link rel="icon" href="../../assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+
+</head>
+<body>
+    <header>
+    </header>
+    <section>
+        <article>            <form action="" method="post" id="register-form">
+                <img src="../../assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="logo">
+                <h1>Registro - COPIA-T</h1>
+                <input type="text" id="name" name="name" required placeholder="Nombre completo">
+                <input type="text" id="surname" name="surname" required placeholder="Apellido completo">
+                <input type="tel" id="phone" name="phone" required placeholder="Número telefónico">
+                <input type="text" id="dni" name="dni" required placeholder="DNI">
+                <input type="email" id="email" name="email" required placeholder="Correo electrónico">
+                <input type="password" id="password" name="password" required placeholder="Contraseña">
+                <div class="checkbox-container">
+                    <p>Acepto los <a href="../../terms.html">términos y condiciones</a></p>
+                    <input type="checkbox" id="terms" name="terms" required>
+                </div>
+                <button type="submit">Registrarse</button>
+                <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+            </form>
+        </article>    </section>    <footer>
+        <p>&copy; 2025 desarrollado por PATAGONYA-BYTES</p>
+    </footer>
+
+    <!-- Modal Dialog -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modal-title">Título</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-icon" class="modal-icon"></div>
+                <p id="modal-message">Mensaje</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-btn-primary" class="modal-btn primary" onclick="closeModal()">Aceptar</button>
+                <button id="modal-btn-secondary" class="modal-btn secondary" onclick="closeModal()" style="display: none;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/registro.js"></script>
+</body>
+</html>

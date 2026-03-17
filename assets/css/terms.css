@@ -1,0 +1,240 @@
+/* ===== RESET Y CONFIGURACIÓN BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', 'Times', serif;
+    background: #ffffff;
+    color: #2c3e50;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== HEADER ===== */
+header {
+    background: #34495e;
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+    border-bottom: 3px solid #2c3e50;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+article.terms-conditions {
+    background: white;
+    padding: 0;
+}
+
+/* ===== TÍTULO DEL DOCUMENTO ===== */
+article.terms-conditions > p:first-child {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #2c3e50;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 15px;
+}
+
+/* ===== LISTA NUMERADA ===== */
+ol {
+    list-style: none;
+    counter-reset: section-counter;
+    margin: 0;
+    padding: 0;
+}
+
+ol > li {
+    counter-increment: section-counter;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-left: 4px solid #3498db;
+    background: #f8f9fa;
+}
+
+ol > li::before {
+    content: counter(section-counter) ".";
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-right: 10px;
+}
+
+/* ===== ENCABEZADOS ===== */
+h2 {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* ===== PÁRRAFOS ===== */
+p {
+    margin-bottom: 15px;
+    text-align: justify;
+    color: #34495e;
+    font-size: 1rem;
+}
+
+/* ===== LISTAS ANIDADAS ===== */
+ul {
+    margin: 15px 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+ul li {
+    margin-bottom: 15px;
+    padding-left: 20px;
+    position: relative;
+}
+
+ul li::before {
+    content: "•";
+    color: #3498db;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+ul li p {
+    margin: 0;
+    padding-left: 10px;
+}
+
+/* ===== BOTÓN DE ACCIÓN ===== */
+.action-buttons {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #ecf0f1;
+}
+
+.btn-back {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-back:hover {
+    background: #2980b9;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background: #ecf0f1;
+    color: #7f8c8d;
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #bdc3c7;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    section {
+        padding: 20px 15px;
+    }
+    
+    ol > li {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    h2 {
+        font-size: 1.1rem;
+    }
+    
+    p {
+        font-size: 0.95rem;
+    }
+    
+    .btn-back {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 20px 10px;
+    }
+    
+    header h1 {
+        font-size: 1.3rem;
+    }
+    
+    section {
+        padding: 15px 10px;
+    }
+    
+    ol > li {
+        padding: 12px;
+        border-left: 3px solid #3498db;
+    }
+    
+    article.terms-conditions > p:first-child {
+        font-size: 1.3rem;
+        margin-bottom: 25px;
+    }
+}
+
+/* ===== IMPRESIÓN ===== */
+@media print {
+    header {
+        background: white;
+        color: black;
+        border-bottom: 2px solid black;
+    }
+    
+    .action-buttons {
+        display: none;
+    }
+    
+    ol > li {
+        background: white;
+        border-left: 2px solid black;
+        break-inside: avoid;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+}

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - COPIA-T</title>    <link rel="stylesheet" href="../../assets/css/panelAdmin.css">
+    <link rel="icon" href="../../assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <img src="../../assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="header-logo">
+            <h1>🛠️ Panel de Administración - COPIA-T</h1>
+            <div class="header-actions">
+                <button onclick="cerrarSesion()" class="logout-btn">
+                    <span>🚪</span> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="orders-management">
+            <div class="orders-header">
+                <h2>📋 Gestión de Pedidos (Admin)</h2>
+                <div class="orders-controls">
+                    <select id="filtroEstado" class="filter-select">
+                        <option value="">Todos los estados</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en_proceso">En Proceso</option>
+                        <option value="completado">Completado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                    <button onclick="actualizarPedidos()" class="refresh-btn">🔄 Actualizar</button>
+                </div>
+            </div>
+
+            <div class="orders-table">
+                <table id="tablaPedidos">
+                    <thead>
+                        <tr>
+                            <th>N° Pedido</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Empleado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPedidos">
+                        <!-- Los pedidos se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>        <section class="admin-tools">
+            <h3>🛠️ Herramientas de Administración</h3>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="card-icon">👨‍💼</div>
+                    <h4>Gestionar Empleados</h4>
+                    <p>Administrar personal y permisos</p>
+                    <button onclick="mostrarGestionEmpleados()" class="tool-button">Gestionar</button>
+                </div>
+                <div class="tool-card">
+                    <div class="card-icon">💰</div>
+                    <h4>Gestionar Precios</h4>
+                    <p>Configurar tarifas y costos</p>
+                    <button onclick="mostrarGestionPrecios()" class="tool-button">Configurar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal para Gestión de Empleados -->
+        <div id="modalEmpleados" class="modal-overlay" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3>👥 Gestión de Empleados</h3>
+                    <button class="modal-close" onclick="cerrarModal('modalEmpleados')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="empleados-controls">
+                        <button onclick="agregarEmpleado()" class="btn btn-primary">➕ Agregar Empleado</button>
+                    </div>
+                    <table id="tablaEmpleados" class="modal-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaEmpleados">
+                            <!-- Se cargará dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Gestión de Precios -->
+        <div id="modalPrecios" class="modal-overlay" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3>💰 Gestión de Precios</h3>
+                    <button class="modal-close" onclick="cerrarModal('modalPrecios')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="precios-grid">
+                        <div class="precio-item">
+                            <label>Impresión A4 B/N:</label>
+                            <input type="number" id="precioA4BN" value="50" step="10"> pesos
+                        </div>
+                        <div class="precio-item">
+                            <label>Impresión A4 Color:</label>
+                            <input type="number" id="precioA4Color" value="150" step="10"> pesos
+                        </div>
+                        <div class="precio-item">
+                            <label>Impresión A3 B/N:</label>
+                            <input type="number" id="precioA3BN" value="100" step="10"> pesos
+                        </div>
+                        <div class="precio-item">
+                            <label>Impresión A3 Color:</label>
+                            <input type="number" id="precioA3Color" value="300" step="10"> pesos
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="guardarPrecios()" class="btn btn-primary">💾 Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>        </div>
+
+        <!-- Modal para Agregar Empleado -->
+        <div id="modalAgregarEmpleado" class="modal-overlay" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3>➕ Agregar Empleado</h3>
+                    <button class="modal-close" onclick="cerrarModal('modalAgregarEmpleado')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nombreEmpleado">Nombre del Empleado:</label>
+                        <input type="text" id="nombreEmpleado" class="form-input" placeholder="Ingrese el nombre completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailEmpleado">Email del Empleado:</label>
+                        <input type="email" id="emailEmpleado" class="form-input" placeholder="empleado@copia-t.com">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="cerrarModal('modalAgregarEmpleado')" class="btn btn-secondary">Cancelar</button>
+                    <button onclick="confirmarAgregarEmpleado()" class="btn btn-primary">➕ Agregar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Editar Empleado -->
+        <div id="modalEditarEmpleado" class="modal-overlay" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3>✏️ Editar Empleado</h3>
+                    <button class="modal-close" onclick="cerrarModal('modalEditarEmpleado')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editarNombreEmpleado">Nombre del Empleado:</label>
+                        <input type="text" id="editarNombreEmpleado" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="editarEmailEmpleado">Email del Empleado:</label>
+                        <input type="email" id="editarEmailEmpleado" class="form-input">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="cerrarModal('modalEditarEmpleado')" class="btn btn-secondary">Cancelar</button>
+                    <button onclick="confirmarEditarEmpleado()" class="btn btn-primary">💾 Guardar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Confirmación -->
+        <div id="modalConfirmacion" class="modal-overlay" style="display: none;">
+            <div class="modal-dialog modal-small">
+                <div class="modal-header">
+                    <h3 id="tituloConfirmacion">Confirmar Acción</h3>
+                    <button class="modal-close" onclick="cerrarModal('modalConfirmacion')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="confirmacion-icon">⚠️</div>
+                    <p id="mensajeConfirmacion">¿Estás seguro de realizar esta acción?</p>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="cerrarModal('modalConfirmacion')" class="btn btn-secondary">Cancelar</button>
+                    <button id="btnConfirmar" onclick="ejecutarAccionConfirmada()" class="btn btn-danger">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 desarrollado por PATAGONYA-BYTES</p>
+            <p>Panel de <strong>Administrador</strong></p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos de ejemplo de pedidos con información de empleado
+        const pedidosEjemplo = [
+            {
+                id: 22343,
+                cliente: "Juan Pérez",
+                estado: "pendiente",
+                fecha: "2025-06-16",
+                total: "$15.500",
+                empleado: "Ana García",
+                detalles: {
+                    email: "juan.perez@email.com",
+                    telefono: "+54 11 1234-5678",
+                    archivo: "documento_importante.pdf",
+                    cantidad: 25,
+                    tipoImpresion: "A4 Color",
+                    observaciones: "Urgente para reunión de mañana"
+                }
+            },
+            {
+                id: 22344,
+                cliente: "María González",
+                estado: "en_proceso",
+                fecha: "2025-06-16",
+                total: "$8.200",
+                empleado: "Carlos López",
+                detalles: {
+                    email: "maria.gonzalez@email.com",
+                    telefono: "+54 11 9876-5432",
+                    archivo: "presentacion_empresa.pptx",
+                    cantidad: 50,
+                    tipoImpresion: "A4 B/N",
+                    observaciones: "Imprimir en ambas caras"
+                }
+            },
+            {
+                id: 22345,
+                cliente: "Carlos Rodríguez",
+                estado: "completado",
+                fecha: "2025-06-15",
+                total: "$22.750",
+                empleado: "Laura Martín",
+                detalles: {
+                    email: "carlos.rodriguez@email.com",
+                    telefono: "+54 11 5555-1234",
+                    archivo: "manual_usuario.docx",
+                    cantidad: 100,
+                    tipoImpresion: "A4 Color",
+                    observaciones: "Encuadernar con espiral"
+                }
+            }
+        ];
+
+        // Datos de ejemplo de empleados
+        const empleadosEjemplo = [
+            { id: 1, nombre: "Ana García", email: "ana.garcia@copia-t.com", estado: "activo" },
+            { id: 2, nombre: "Carlos López", email: "carlos.lopez@copia-t.com", estado: "activo" },
+            { id: 3, nombre: "Laura Martín", email: "laura.martin@copia-t.com", estado: "inactivo" },
+            { id: 4, nombre: "Diego Fernández", email: "diego.fernandez@copia-t.com", estado: "activo" }
+        ];
+
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión de administrador?')) {
+                localStorage.removeItem('adminLogueado');
+                localStorage.removeItem('usuarioLogueado');
+                localStorage.removeItem('empleadoLogueado');
+                window.location.href = '../auth/login.html';
+            }
+        }
+
+        // Función para cambiar estado del pedido
+        function cambiarEstado(pedidoId, nuevoEstado) {
+            console.log(`Admin cambiando estado del pedido ${pedidoId} a ${nuevoEstado}`);
+            cargarPedidos();
+        }
+
+        // Función para mostrar/ocultar detalles del pedido
+        function toggleDetalles(pedidoId) {
+            const detallesRow = document.getElementById(`detalles-${pedidoId}`);
+            if (detallesRow.style.display === 'none' || detallesRow.style.display === '') {
+                detallesRow.style.display = 'table-row';
+            } else {
+                detallesRow.style.display = 'none';
+            }
+        }
+
+        // Función para cargar y mostrar pedidos
+        function cargarPedidos() {
+            const tbody = document.getElementById('listaPedidos');
+            const filtroEstado = document.getElementById('filtroEstado').value;
+            
+            let pedidosFiltrados = pedidosEjemplo;
+            if (filtroEstado) {
+                pedidosFiltrados = pedidosEjemplo.filter(pedido => pedido.estado === filtroEstado);
+            }
+
+            tbody.innerHTML = '';
+
+            pedidosFiltrados.forEach(pedido => {
+                // Fila principal del pedido
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>#${pedido.id}</td>
+                    <td>${pedido.cliente}</td>
+                    <td>
+                        <select onchange="cambiarEstado(${pedido.id}, this.value)" class="estado-select estado-${pedido.estado}">
+                            <option value="pendiente" ${pedido.estado === 'pendiente' ? 'selected' : ''}>Pendiente</option>
+                            <option value="en_proceso" ${pedido.estado === 'en_proceso' ? 'selected' : ''}>En Proceso</option>
+                            <option value="completado" ${pedido.estado === 'completado' ? 'selected' : ''}>Completado</option>
+                            <option value="cancelado" ${pedido.estado === 'cancelado' ? 'selected' : ''}>Cancelado</option>
+                        </select>
+                    </td>
+                    <td>${pedido.fecha}</td>
+                    <td>${pedido.total}</td>
+                    <td>${pedido.empleado}</td>
+                    <td>
+                        <button onclick="toggleDetalles(${pedido.id})" class="details-btn">
+                            👁️ Ver Detalles
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+
+                // Fila de detalles (inicialmente oculta)
+                const detallesRow = document.createElement('tr');
+                detallesRow.id = `detalles-${pedido.id}`;
+                detallesRow.className = 'detalles-row';
+                detallesRow.style.display = 'none';
+                detallesRow.innerHTML = `
+                    <td colspan="7">
+                        <div class="detalles-content">
+                            <h4>Detalles del Pedido #${pedido.id}</h4>
+                            <div class="detalles-grid">
+                                <div class="detalle-item">
+                                    <strong>Email:</strong> ${pedido.detalles.email}
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Teléfono:</strong> ${pedido.detalles.telefono}
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Archivo:</strong> ${pedido.detalles.archivo}
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Cantidad:</strong> ${pedido.detalles.cantidad} hojas
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Tipo de Impresión:</strong> ${pedido.detalles.tipoImpresion}
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Empleado Asignado:</strong> ${pedido.empleado}
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Observaciones:</strong> ${pedido.detalles.observaciones}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(detallesRow);
+            });
+        }
+
+        // Función para actualizar pedidos
+        function actualizarPedidos() {
+            cargarPedidos();
+        }
+
+        // ===== GESTIÓN DE EMPLEADOS =====
+        function mostrarGestionEmpleados() {
+            document.getElementById('modalEmpleados').style.display = 'flex';
+            cargarEmpleados();
+        }
+
+        function cargarEmpleados() {
+            const tbody = document.getElementById('listaEmpleados');
+            tbody.innerHTML = '';
+
+            empleadosEjemplo.forEach(empleado => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${empleado.id}</td>
+                    <td>${empleado.nombre}</td>
+                    <td>${empleado.email}</td>
+                    <td>
+                        <span class="estado-badge estado-${empleado.estado}">${empleado.estado}</span>
+                    </td>
+                    <td>
+                        <button onclick="editarEmpleado(${empleado.id})" class="btn btn-small">✏️ Editar</button>
+                        <button onclick="eliminarEmpleado(${empleado.id})" class="btn btn-small btn-danger">🗑️ Eliminar</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }        function agregarEmpleado() {
+            document.getElementById('nombreEmpleado').value = '';
+            document.getElementById('emailEmpleado').value = '';
+            document.getElementById('modalAgregarEmpleado').style.display = 'flex';
+        }
+
+        function confirmarAgregarEmpleado() {
+            const nombre = document.getElementById('nombreEmpleado').value.trim();
+            const email = document.getElementById('emailEmpleado').value.trim();
+            
+            if (nombre && email) {
+                const nuevoEmpleado = {
+                    id: empleadosEjemplo.length + 1,
+                    nombre: nombre,
+                    email: email,
+                    estado: 'activo'
+                };
+                empleadosEjemplo.push(nuevoEmpleado);
+                cargarEmpleados();
+                cerrarModal('modalAgregarEmpleado');
+                mostrarNotificacion('✅ Empleado agregado exitosamente');
+            } else {
+                mostrarNotificacion('⚠️ Por favor complete todos los campos', 'error');
+            }
+        }        let empleadoEditandoId = null;
+
+        function editarEmpleado(id) {
+            const empleado = empleadosEjemplo.find(e => e.id === id);
+            if (empleado) {
+                empleadoEditandoId = id;
+                document.getElementById('editarNombreEmpleado').value = empleado.nombre;
+                document.getElementById('editarEmailEmpleado').value = empleado.email;
+                document.getElementById('modalEditarEmpleado').style.display = 'flex';
+            }
+        }
+
+        function confirmarEditarEmpleado() {
+            const nuevoNombre = document.getElementById('editarNombreEmpleado').value.trim();
+            const nuevoEmail = document.getElementById('editarEmailEmpleado').value.trim();
+            
+            if (nuevoNombre && nuevoEmail && empleadoEditandoId) {
+                const empleado = empleadosEjemplo.find(e => e.id === empleadoEditandoId);
+                if (empleado) {
+                    empleado.nombre = nuevoNombre;
+                    empleado.email = nuevoEmail;
+                    cargarEmpleados();
+                    cerrarModal('modalEditarEmpleado');
+                    mostrarNotificacion('✅ Empleado actualizado exitosamente');
+                    empleadoEditandoId = null;
+                }
+            } else {
+                mostrarNotificacion('⚠️ Por favor complete todos los campos', 'error');
+            }
+        }        let empleadoEliminarId = null;
+        let accionConfirmada = null;
+
+        function eliminarEmpleado(id) {
+            const empleado = empleadosEjemplo.find(e => e.id === id);
+            if (empleado) {
+                empleadoEliminarId = id;
+                accionConfirmada = () => {
+                    const index = empleadosEjemplo.findIndex(e => e.id === empleadoEliminarId);
+                    if (index > -1) {
+                        empleadosEjemplo.splice(index, 1);
+                        cargarEmpleados();
+                        mostrarNotificacion('✅ Empleado eliminado exitosamente');
+                        empleadoEliminarId = null;
+                    }
+                };
+                
+                document.getElementById('tituloConfirmacion').textContent = '🗑️ Eliminar Empleado';
+                document.getElementById('mensajeConfirmacion').textContent = `¿Estás seguro de eliminar al empleado "${empleado.nombre}"? Esta acción no se puede deshacer.`;
+                document.getElementById('modalConfirmacion').style.display = 'flex';
+            }
+        }
+
+        function ejecutarAccionConfirmada() {
+            if (accionConfirmada) {
+                accionConfirmada();
+                accionConfirmada = null;
+            }
+            cerrarModal('modalConfirmacion');
+        }
+
+        // ===== GESTIÓN DE PRECIOS =====
+        function mostrarGestionPrecios() {
+            document.getElementById('modalPrecios').style.display = 'flex';
+        }        function guardarPrecios() {
+            const precios = {
+                a4bn: document.getElementById('precioA4BN').value,
+                a4color: document.getElementById('precioA4Color').value,
+                a3bn: document.getElementById('precioA3BN').value,
+                a3color: document.getElementById('precioA3Color').value
+            };
+            
+            localStorage.setItem('preciosImpresion', JSON.stringify(precios));
+            mostrarNotificacion('💰 Precios actualizados exitosamente');
+            cerrarModal('modalPrecios');
+        }// ===== FUNCIONES AUXILIARES =====
+        function mostrarNotificacion(mensaje, tipo = 'success') {
+            // Crear el elemento de notificación
+            const notificacion = document.createElement('div');
+            notificacion.className = `notificacion ${tipo}`;
+            notificacion.textContent = mensaje;
+            
+            // Estilos en línea para la notificación
+            Object.assign(notificacion.style, {
+                position: 'fixed',
+                top: '20px',
+                right: '20px',
+                padding: '1rem 1.5rem',
+                borderRadius: '8px',
+                color: 'white',
+                fontWeight: '600',
+                zIndex: '9999',
+                transform: 'translateX(100%)',
+                transition: 'transform 0.3s ease',
+                maxWidth: '300px',
+                background: tipo === 'error' ? 'linear-gradient(135deg, #ef4444, #dc2626)' : 'linear-gradient(135deg, #10b981, #059669)',
+                boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)'
+            });
+            
+            document.body.appendChild(notificacion);
+            
+            // Mostrar la notificación
+            setTimeout(() => {
+                notificacion.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Ocultar y eliminar después de 3 segundos
+            setTimeout(() => {
+                notificacion.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notificacion.parentNode) {
+                        notificacion.parentNode.removeChild(notificacion);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function cerrarModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Verificar si hay administrador logueado y cargar datos
+        document.addEventListener('DOMContentLoaded', () => {
+            const adminLogueado = localStorage.getItem('adminLogueado');
+            if (!adminLogueado) {
+                alert('⚠️ Acceso restringido. Redirigiendo al login...');
+                window.location.href = '../auth/login.html';
+                return;
+            }
+            
+            // Mostrar información del administrador logueado
+            const adminData = JSON.parse(adminLogueado);
+            console.log(`Administrador logueado: ${adminData.nombre || 'Admin'}`);
+
+            // Cargar datos
+            cargarPedidos();
+
+            // Event listener para el filtro
+            document.getElementById('filtroEstado').addEventListener('change', cargarPedidos);
+
+            // Cerrar modales al hacer clic fuera
+            ['modalEmpleados', 'modalPrecios'].forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        cerrarModal(modalId);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

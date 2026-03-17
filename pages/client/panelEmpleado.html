@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Empleado - COPIA-T</title>
+    <link rel="stylesheet" href="../../assets/css/panelAdmin.css">
+    <link rel="icon" href="../../assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="../../assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="header-logo">
+            <h1>👨‍💼 Panel de Empleado - COPIA-T</h1>
+            <div class="header-actions">
+                <button onclick="cerrarSesion()" class="logout-btn">
+                    <span>🚪</span> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="orders-management">
+            <div class="orders-header">
+                <h2>📋 Gestión de Pedidos</h2>
+                <div class="orders-controls">
+                    <select id="filtroEstado" class="filter-select">
+                        <option value="">Todos los estados</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en_proceso">En Proceso</option>
+                        <option value="completado">Completado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                    <button onclick="actualizarPedidos()" class="refresh-btn">🔄 Actualizar</button>
+                </div>
+            </div>
+
+            <div class="orders-table">
+                <table id="tablaPedidos">
+                    <thead>
+                        <tr>
+                            <th>N° Pedido</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>                    <tbody id="listaPedidos">
+                        <!-- Los pedidos se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 desarrollado por PATAGONYA-BYTES</p>
+            <p>Panel de <strong>Empleado</strong></p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos de ejemplo de pedidos
+        const pedidosEjemplo = [
+            {
+                id: 22343,
+                cliente: "Juan Pérez",
+                estado: "pendiente",
+                fecha: "2025-06-16",
+                total: "$15.500",
+                detalles: {
+                    email: "juan.perez@email.com",
+                    telefono: "+54 11 1234-5678",
+                    archivo: "documento_importante.pdf",
+                    cantidad: 25,
+                    tipoImpresion: "A4 Color",
+                    observaciones: "Urgente para reunión de mañana"
+                }
+            },
+            {
+                id: 22344,
+                cliente: "María González",
+                estado: "en_proceso",
+                fecha: "2025-06-16",
+                total: "$8.200",
+                detalles: {
+                    email: "maria.gonzalez@email.com",
+                    telefono: "+54 11 9876-5432",
+                    archivo: "presentacion_empresa.pptx",
+                    cantidad: 50,
+                    tipoImpresion: "A4 B/N",
+                    observaciones: "Imprimir en ambas caras"
+                }
+            },
+            {
+                id: 22345,
+                cliente: "Carlos Rodríguez",
+                estado: "completado",
+                fecha: "2025-06-15",
+                total: "$22.750",
+                detalles: {
+                    email: "carlos.rodriguez@email.com",
+                    telefono: "+54 11 5555-1234",
+                    archivo: "manual_usuario.docx",
+                    cantidad: 100,
+                    tipoImpresion: "A4 Color",
+                    observaciones: "Encuadernar con espiral"
+                }
+            }
+        ];
+
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión de empleado?')) {
+                localStorage.removeItem('empleadoLogueado');
+                localStorage.removeItem('usuarioLogueado');
+                localStorage.removeItem('adminLogueado');
+                window.location.href = '../auth/login.html';
+            }
+        }
+
+        // Función para cambiar estado del pedido
+        function cambiarEstado(pedidoId, nuevoEstado) {
+            // Aquí se haría la llamada al backend para actualizar el estado
+            console.log(`Cambiando estado del pedido ${pedidoId} a ${nuevoEstado}`);
+            cargarPedidos();
+        }
+
+        // Función para mostrar/ocultar detalles del pedido
+        function toggleDetalles(pedidoId) {
+            const detallesRow = document.getElementById(`detalles-${pedidoId}`);
+            if (detallesRow.style.display === 'none' || detallesRow.style.display === '') {
+                detallesRow.style.display = 'table-row';
+            } else {
+                detallesRow.style.display = 'none';
+            }
+        }
+
+        // Función para cargar y mostrar pedidos
+        function cargarPedidos() {
+            const tbody = document.getElementById('listaPedidos');
+            const filtroEstado = document.getElementById('filtroEstado').value;
+            
+            let pedidosFiltrados = pedidosEjemplo;
+            if (filtroEstado) {
+                pedidosFiltrados = pedidosEjemplo.filter(pedido => pedido.estado === filtroEstado);
+            }
+
+            tbody.innerHTML = '';
+
+            pedidosFiltrados.forEach(pedido => {
+                // Fila principal del pedido
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>#${pedido.id}</td>
+                    <td>${pedido.cliente}</td>
+                    <td>
+                        <select onchange="cambiarEstado(${pedido.id}, this.value)" class="estado-select estado-${pedido.estado}">
+                            <option value="pendiente" ${pedido.estado === 'pendiente' ? 'selected' : ''}>Pendiente</option>
+                            <option value="en_proceso" ${pedido.estado === 'en_proceso' ? 'selected' : ''}>En Proceso</option>
+                            <option value="completado" ${pedido.estado === 'completado' ? 'selected' : ''}>Completado</option>
+                            <option value="cancelado" ${pedido.estado === 'cancelado' ? 'selected' : ''}>Cancelado</option>
+                        </select>
+                    </td>
+                    <td>${pedido.fecha}</td>
+                    <td>${pedido.total}</td>
+                    <td>
+                        <button onclick="toggleDetalles(${pedido.id})" class="details-btn">
+                            👁️ Ver Detalles
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+
+                // Fila de detalles (inicialmente oculta)
+                const detallesRow = document.createElement('tr');
+                detallesRow.id = `detalles-${pedido.id}`;
+                detallesRow.className = 'detalles-row';
+                detallesRow.style.display = 'none';
+                detallesRow.innerHTML = `
+                    <td colspan="6">
+                        <div class="detalles-content">
+                            <h4>Detalles del Pedido #${pedido.id}</h4>
+                            <div class="detalles-grid">
+                                <div class="detalle-item">
+                                    <strong>Email:</strong> ${pedido.detalles.email}
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Teléfono:</strong> ${pedido.detalles.telefono}
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Archivo:</strong> ${pedido.detalles.archivo}
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Cantidad:</strong> ${pedido.detalles.cantidad} hojas
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Tipo de Impresión:</strong> ${pedido.detalles.tipoImpresion}
+                                </div>
+                                <div class="detalle-item">
+                                    <strong>Observaciones:</strong> ${pedido.detalles.observaciones}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(detallesRow);
+            });
+        }
+
+        // Función para actualizar pedidos
+        function actualizarPedidos() {
+            cargarPedidos();
+        }
+
+        // Verificar si hay empleado logueado y cargar pedidos
+        document.addEventListener('DOMContentLoaded', () => {
+            const empleadoLogueado = localStorage.getItem('empleadoLogueado');
+            if (!empleadoLogueado) {
+                alert('⚠️ Acceso restringido. Redirigiendo al login...');
+                window.location.href = '../auth/login.html';                return;
+            }
+            
+            // Mostrar información del empleado logueado (opcional)
+            const empleadoData = JSON.parse(empleadoLogueado);
+            console.log(`Empleado logueado: ${empleadoData.nombre || 'Usuario'}`);
+
+            // Cargar pedidos
+            cargarPedidos();
+
+            // Event listener para el filtro
+            document.getElementById('filtroEstado').addEventListener('change', cargarPedidos);
+        });
+    </script>
+</body>
+</html>

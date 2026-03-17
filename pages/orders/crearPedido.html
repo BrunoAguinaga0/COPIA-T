@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Pedido - COPIA-T</title>    <link rel="stylesheet" href="../../assets/css/crearPedido.css">
+    <link rel="icon" href="../../assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+</head>
+
+<body>
+    <section>
+        <article class="crear-pedido">
+            <img src="../../assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="logo">
+            <h1>Crear Pedido</h1>
+            <form action="" method="post" id="formulario-crear-pedido">
+                <div class="subir-archivos-section">
+                    <h3>📁 Subir archivos para imprimir</h3>
+                    <div class="archivos-upload">
+                        <label for="archivos" class="upload-label">
+                            <span class="upload-icon">📄</span> <span class="upload-text">
+                                <strong>Seleccionar archivos</strong>
+                                <br>
+                                <small>Haz clic aquí o arrastra tus archivos</small>
+                            </span>
+                        </label>
+                        <input type="file" id="archivos" name="archivos[]"
+                            accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.jpg,.jpeg,.png" multiple required
+                            class="file-input">
+                        <div class="upload-requirements">
+                            <small>
+                                <strong>Archivos permitidos:</strong>
+                                <br>• PDF, Word, PowerPoint, Excel, TXT
+                                <br>• Imágenes (JPG, PNG)
+                                <br>• Múltiples archivos permitidos
+                                <br>• <em>También puedes arrastrar archivos aquí</em>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <!-- Contenedor donde se mostrarán los detalles de cada archivo -->
+                <div id="archivos-detalles" style="display: none;">
+                    <div class="paginado-header">
+                        <h3>Configuración de archivos</h3>
+                        <div class="progreso">
+                            <span id="archivo-actual">1</span> de <span id="total-archivos">1</span>
+                            <div class="barra-progreso">
+                                <div class="progreso-completado" id="barra-progreso"></div>
+                            </div>
+                        </div>
+                        <div class="resumen-precios">
+                            <div class="precio-archivo-actual">
+                                <strong>Archivo actual: $<span id="precio-archivo">0.00</span></strong>
+                            </div>
+                            <div class="precio-total">
+                                <strong>Total del pedido: $<span id="precio-total">0.00</span></strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="configuracion-actual" class="pagina-configuracion">
+                        <!-- Aquí se cargará dinámicamente la configuración del archivo actual -->
+                    </div>
+                    <div class="controles-navegacion">
+                        <button type="button" id="btn-anterior" onclick="anteriorArchivo()" disabled>
+                            ← Anterior
+                        </button> <button type="button" id="btn-siguiente" onclick="siguienteArchivo()">
+                            Siguiente →
+                        </button>
+                        <button type="button" id="btn-finalizar" onclick="pagarPedido()" style="display: none;">
+                            💳 Pagar Pedido
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-crear-pedido" style="display: none;">Crear Pedido</button>
+            </form>
+        </article>
+    </section>    <!-- Modal Dialog -->
+    <div id="modal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modal-title">Título</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-icon" class="modal-icon"></div>
+                <p id="modal-message">Mensaje</p>
+            </div>
+            <div class="modal-footer" id="modal-actions">
+                <button id="modal-btn-primary" class="btn btn-primary" onclick="closeModal()">Aceptar</button>
+                <button id="modal-btn-secondary" class="btn btn-secondary" onclick="closeModal()"
+                    style="display: none;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/crearPedido.js"></script>
+</body>
+
+</html>

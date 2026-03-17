@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña - COPIA-T</title>    <link rel="stylesheet" href="../../assets/css/olvidoPasswd.css">
+    <link rel="icon" href="../../assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+    </header>
+    <section>
+        <article>
+            <form action="" method="post" id="forgot-password-form">
+                <img src="../../assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="logo">
+                <h1>Recuperar Contraseña</h1>
+                <p class="description">Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.</p>
+                <input placeholder="Ingresa tu correo electrónico" type="email" id="email" name="email" required>
+                <button type="submit">Recuperar Contraseña</button>
+                <p><a href="login.html">← Volver al login</a></p>
+            </form>
+        </article>
+    </section>    <footer>
+        <p>&copy; 2025 desarrollado por PATAGONYA-BYTES</p>
+        <p><a href="../../terms.html">Términos y condiciones</a></p>
+    </footer>
+    
+    <script>
+        // JavaScript para el formulario de recuperación de contraseña
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('forgot-password-form');
+            const emailInput = document.getElementById('email');
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            // Función de validación de email
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            
+            // Validación en tiempo real del email
+            emailInput.addEventListener('blur', function() {
+                if (this.value && !validateEmail(this.value)) {
+                    this.classList.add('input-error');
+                    this.classList.remove('input-success');
+                } else if (this.value && validateEmail(this.value)) {
+                    this.classList.add('input-success');
+                    this.classList.remove('input-error');
+                } else {
+                    this.classList.remove('input-error', 'input-success');
+                }
+            });
+            
+            // Limpiar estados al escribir
+            emailInput.addEventListener('input', function() {
+                if (this.classList.contains('input-error')) {
+                    this.classList.remove('input-error');
+                }
+            });
+            
+            // Manejar envío del formulario
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = emailInput.value.trim();
+                
+                // Validación básica
+                if (!email) {
+                    alert('Por favor, ingresa tu correo electrónico.');
+                    emailInput.focus();
+                    return;
+                }
+                
+                if (!validateEmail(email)) {
+                    alert('Por favor, ingresa un email válido.');
+                    emailInput.classList.add('input-error');
+                    emailInput.focus();
+                    return;
+                }
+                
+                // Mostrar estado de carga
+                submitButton.classList.add('loading');
+                submitButton.disabled = true;
+                
+                // Simular envío de email de recuperación
+                setTimeout(() => {
+                    // Crear mensaje de éxito
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'success-message show';
+                    successMessage.innerHTML = `
+                        <strong>¡Email enviado!</strong><br>
+                        Hemos enviado un enlace de recuperación a <strong>${email}</strong>.<br>
+                        Revisa tu bandeja de entrada y spam.
+                    `;
+                    
+                    // Insertar mensaje antes del formulario
+                    form.parentNode.insertBefore(successMessage, form);
+                    
+                    // Limpiar formulario
+                    emailInput.value = '';
+                    emailInput.classList.remove('input-error', 'input-success');
+                    
+                    // Remover estado de carga
+                    submitButton.classList.remove('loading');
+                    submitButton.disabled = false;
+                    
+                    // Opcional: redirigir al login después de unos segundos
+                    setTimeout(() => {
+                        if (confirm('¿Quieres volver al login ahora?')) {
+                            window.location.href = 'login.html';
+                        }
+                    }, 3000);
+                    
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

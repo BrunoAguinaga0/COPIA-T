@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Exitoso - COPIA-T</title>    <link rel="stylesheet" href="../../assets/css/pagarPedidoPHP.css">
+    <link rel="icon" href="../../assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+    <style>
+        .result-page {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+        
+        .result-title {
+            color: #10b981;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .result-message {
+            color: #6b7280;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .payment-details {
+            background: #f0fdf4;
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .payment-details h3 {
+            color: #10b981;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #d1fae5;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .btn-home {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(16, 185, 129, 0.4);
+        }
+        
+        .next-steps {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .next-steps h4 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        
+        .next-steps ul {
+            color: #6b7280;
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .next-steps li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-page">
+        <img src="../../assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="logo" style="width: 80px; height: 80px; margin-bottom: 20px;">
+        
+        <div class="success-icon">✅</div>
+        
+        <h1 class="result-title">¡Pago Exitoso!</h1>
+        
+        <p class="result-message">
+            Tu pago ha sido procesado exitosamente. Hemos recibido la confirmación de MercadoPago y tu pedido está siendo procesado.
+        </p>
+        
+        <div class="payment-details">
+            <h3>📋 Detalles del Pedido</h3>
+            <div class="detail-item">
+                <span>Número de Pedido:</span>
+                <span id="payment-id">-</span>
+            </div>
+            <div class="detail-item">
+                <span>Estado del Pago:</span>
+                <span style="color: #10b981; font-weight: bold;">Aprobado</span>
+            </div>
+            <div class="detail-item">
+                <span>Método de Pago:</span>
+                <span>MercadoPago</span>
+            </div>
+            <div class="detail-item">
+                <span>Monto Pagado:</span>
+                <span id="payment-amount">$0.00</span>
+            </div>
+        </div>
+        
+        <div class="next-steps">
+            <h4>🚀 Próximos Pasos:</h4>
+            <ul>
+                <li><strong>Procesamiento inmediato:</strong> Tu pedido comenzará a procesarse de inmediato</li>
+                <li><strong>Confirmación por email:</strong> Recibirás un email con todos los detalles</li>
+                <li><strong>Seguimiento:</strong> Podrás hacer seguimiento desde tu panel de cliente</li>
+                <li><strong>Tiempo estimado:</strong> El pedido estará listo según el tiempo estimado mostrado</li>
+            </ul>
+        </div>
+        
+        <a href="../../index.html" class="btn-home">🏠 Volver al Inicio</a>
+    </div>
+    
+    <script>
+        // Obtener parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get('payment_id');
+        const status = urlParams.get('status');
+        const merchantOrderId = urlParams.get('merchant_order_id');
+        
+        // Mostrar información del pago si está disponible
+        if (paymentId) {
+            document.getElementById('payment-id').textContent = paymentId;
+        }
+          // Aquí podrías hacer una llamada AJAX para obtener más detalles del pago
+        // y mostrar el monto exacto pagado
+    </script>
+    
+    <footer style="text-align: center; margin-top: 40px; padding: 20px; font-size: 0.9em; color: #666;">
+        <p>&copy; 2025 desarrollado por PATAGONYA-BYTES</p>
+    </footer>
+</body>
+</html>

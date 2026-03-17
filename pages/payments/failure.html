@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Rechazado - COPIA-T</title>
+    <link rel="stylesheet" href="pagarPedido.css">
+    <link rel="icon" href="../../assets/images/printer-print-svgrepo-com.svg" type="image/svg+xml">
+    <style>
+        .result-page {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .failure-icon {
+            font-size: 4rem;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+        
+        .result-title {
+            color: #ef4444;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .result-message {
+            color: #6b7280;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .payment-details {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .payment-details h3 {
+            color: #ef4444;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #fecaca;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .btn-retry {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+        }
+        
+        .btn-retry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-home {
+            background: #6b7280;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-home:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+        }
+        
+        .help-section {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .help-section h4 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        
+        .help-section ul {
+            color: #6b7280;
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .help-section li {
+            margin: 8px 0;
+        }
+        
+        .alternative-payment {
+            background: #fffbeb;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .alternative-payment h4 {
+            color: #d97706;
+            margin-bottom: 10px;
+        }
+        
+        .alternative-payment p {
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+        
+        .btn-transfer {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-transfer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px -5px rgba(5, 150, 105, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="result-page">
+        <img src="../../assets/images/printer-print-svgrepo-com.svg" alt="COPIA-T Logo" class="logo" style="width: 80px; height: 80px; margin-bottom: 20px;">
+        
+        <div class="failure-icon">❌</div>
+        
+        <h1 class="result-title">Pago Rechazado</h1>
+        
+        <p class="result-message">
+            Lo sentimos, tu pago no pudo ser procesado. No te preocupes, esto sucede ocasionalmente y puedes intentar nuevamente.
+        </p>
+        
+        <div class="payment-details">
+            <h3>📋 Detalles del Intento</h3>
+            <div class="detail-item">
+                <span>Número de Referencia:</span>
+                <span id="payment-id">-</span>
+            </div>
+            <div class="detail-item">
+                <span>Estado del Pago:</span>
+                <span style="color: #ef4444; font-weight: bold;">Rechazado</span>
+            </div>
+            <div class="detail-item">
+                <span>Método Intentado:</span>
+                <span>MercadoPago</span>
+            </div>
+        </div>
+        
+        <div class="help-section">
+            <h4>🤔 Posibles Causas del Rechazo:</h4>
+            <ul>
+                <li><strong>Fondos insuficientes:</strong> Verifica que tu tarjeta o cuenta tenga fondos suficientes</li>
+                <li><strong>Datos incorrectos:</strong> Revisa que los datos de la tarjeta sean correctos</li>
+                <li><strong>Límite excedido:</strong> Puede que hayas excedido el límite de tu tarjeta</li>
+                <li><strong>Restricciones bancarias:</strong> Tu banco puede haber bloqueado la transacción</li>
+                <li><strong>Problemas temporales:</strong> Puede ser un problema temporal del sistema</li>
+            </ul>
+        </div>
+        
+        <div style="margin: 30px 0;">            <a href="pagarPedido.php" class="btn-retry">🔄 Intentar Nuevamente</a>
+            <a href="../../index.html" class="btn-home">🏠 Volver al Inicio</a>
+        </div>
+        
+        <div class="alternative-payment">
+            <h4>💡 Opción Alternativa</h4>
+            <p>Si continúas teniendo problemas con MercadoPago, puedes pagar mediante <strong>transferencia bancaria</strong> sin comisiones adicionales:</p>
+            <a href="pagarPedido.html?metodo=transferencia" class="btn-transfer">🏦 Pagar con Transferencia</a>
+        </div>
+    </div>
+    
+    <script>
+        // Obtener parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get('payment_id');
+        const status = urlParams.get('status');
+        const statusDetail = urlParams.get('status_detail');
+        
+        // Mostrar información del pago si está disponible
+        if (paymentId) {
+            document.getElementById('payment-id').textContent = paymentId;
+        }
+        
+        // Mostrar información adicional basada en el status_detail si está disponible
+        if (statusDetail) {            console.log('Status detail:', statusDetail);
+            // Aquí podrías personalizar el mensaje basado en el motivo específico del rechazo
+        }
+    </script>
+    
+    <footer style="text-align: center; margin-top: 40px; padding: 20px; font-size: 0.9em; color: #666;">
+        <p>&copy; 2025 desarrollado por PATAGONYA-BYTES</p>
+    </footer>
+</body>
+</html>
